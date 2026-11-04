@@ -5,7 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import RequireAuth from "@/components/RequireAuth";
 import ConfirmDelete from "@/components/ConfirmDelete";
 import OutingForm from "@/components/OutingForm";
-import { getPlace, deletePlace, deleteOuting, listStarIds } from "@/lib/data";
+import { getPlace, deletePlace, deleteOuting, listStarIds, listOutings } from "@/lib/data";
+import { outingImpact } from "@/lib/outingImpact";
 import StarButton from "@/components/StarButton";
 import { AMENITIES, WARNINGS, typeInfo } from "@/lib/constants";
 
@@ -14,6 +15,7 @@ function Detail() {
   const router = useRouter();
   const [place, setPlace] = useState(undefined);
   const [starred, setStarred] = useState(null);
+  const [impact, setImpact] = useState(null);
   const load = useCallback(() => getPlace(id).then(setPlace).catch(() => setPlace(null)), [id]);
   useEffect(() => { listStarIds().then((s) => setStarred(s.has(id))).catch(() => setStarred(false)); }, [id]);
   useEffect(() => { load(); }, [load]);
@@ -49,7 +51,17 @@ function Detail() {
         </div>
       </div>
 
-      <OutingForm placeId={id} onAdded={load} />
+      {impact && (
+        <div className="card p-4 space-y-1" style={{ borderColor: "var(--primary)", borderWidth: 2 }} role="status">
+          <p className="font-bold">✅ Outing saved!</p>
+          {impact.map((l, i) => <p key={i}>{l}</p>)}
+          <p className="pt-1"><Link href="/dashboard" className="underline font-semibold">See your dashboard →</Link></p>
+        </div>
+      )}
+      <OutingForm placeId={id} onAdded={async () => {
+        await load();
+        try { setImpact(outingImpact(await listOutings(), place.name)); } catch {}
+      }} />
 
       <section className="space-y-2">
         <h2 className="text-xl font-bold">Outings ({place.outings.length})</h2>
