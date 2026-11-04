@@ -56,7 +56,7 @@ function Places() {
                   {typeInfo(p.type).label} · {p.outings.length} outing{p.outings.length === 1 ? "" : "s"}
                   {p.outings.length > 0 && <> · {"🐾"} {avgRating(p).toFixed(1)}</>}
                 </span>
-                {p.dont_go && <span className="text-sm font-bold" style={{ color: "var(--danger)" }}>🚫 Don&apos;t go</span>}
+                {p.dont_go && <span className="block text-sm font-bold" style={{ color: "var(--danger)" }}>🚫 Don&apos;t go</span>}
               </span>
               <StarButton placeId={p.id} starred={stars.has(p.id)} onChange={onStar} />
             </Link>

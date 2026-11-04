@@ -5,13 +5,16 @@ const DogModeContext = createContext({ dog: false, toggle: () => {} });
 
 export function DogModeProvider({ children }) {
   const [dog, setDog] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     try { setDog(localStorage.getItem("yayas-dog-mode") === "1"); } catch {}
+    setLoaded(true);
   }, []);
   useEffect(() => {
     document.documentElement.classList.toggle("dog", dog);
+    if (!loaded) return; // don't overwrite the saved setting before we've read it
     try { localStorage.setItem("yayas-dog-mode", dog ? "1" : "0"); } catch {}
-  }, [dog]);
+  }, [dog, loaded]);
   return <DogModeContext.Provider value={{ dog, toggle: () => setDog((d) => !d) }}>{children}</DogModeContext.Provider>;
 }
 
