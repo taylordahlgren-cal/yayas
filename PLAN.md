@@ -87,20 +87,18 @@ Privacy is enforced in the database with Supabase Row Level Security: every tabl
 ## Plan vs. Reality
 *(Added at the end. The original plan above was not edited.)*
 
-> ✏️ **DRAFT. Taylor: rewrite the "Learning" column in your own words before submitting.**
-
 | Planned feature | Shipped / Changed / Cut | Status | Learning | What changed and why (one line) |
 |---|---|---|---|---|
-| 1. Sign up and login | Changed | Done | Small settings (like "Confirm email") can break a live demo. | Added a database trigger to copy each new account into `users`; the first version used `gen_random_bytes()`, which would have made every sign-up fail on Supabase. Caught and fixed in PR #22. |
-| 2. Data model | Changed | Done | The database can enforce rules the form forgets. | Built as planned, plus database checks (rating 1–5, valid type) and `user_id` defaulting to the logged-in user. |
-| 3. CRUD | Shipped | Done | | Places *and* outings both got add / view / delete; only places have an edit page (outings can be deleted and re-logged). |
-| 4. Validation | Changed | Done | | Also blocks future dates and negative miles/minutes, which weren't in the plan. |
-| 5. Stars | Shipped | Done | | One `stars` junction table as planned. |
-| 6. Find things | Changed | Done | | Search also looks inside tips, and 🚫 Don't-go places always sort to the bottom (the agent's idea, which I accepted). |
-| 7. Dashboard | Changed | Done | | Added a 4th stat, 🏆 favorite spot. "Outings per week" is limited to the last 8 weeks. |
-| 8. Random pick with filters | Changed | Done | | Also skips treat stops and won't pick the same place twice in a row. |
-| 9. Sitter share link | Changed | Done | The riskiest feature needed the most careful design. | Built as a database function that returns only safe columns, so logged-out visitors never touch the `places` table. Also hides 🚫 places and treat stops, and the link can be reset. |
-| 10. Dog Mode + secret treat stops | Shipped | Done | | Built as planned. The setting is saved per browser, not per account. |
-| Bonus: 🏆 Most-visited badge | Changed | Backlogged | | No badge on the place card. "Most visited" became a sort option and the dashboard's favorite-spot stat instead. |
-| Test 1: Data isolation | Changed | Done | Privacy lives in the database, so the test has to hit the real database. | Runs in GitHub Actions against real Supabase. The red run showed User B seeing **my real place**, not just test data. |
-| Test 2: Dashboard stat | Shipped | Done | | Tests the pure `computeStats` function, so no database is needed. |
+| 1. Sign up and login | Changed | Done | One Supabase setting ("Confirm email") decides whether live sign-up works. Julian logging in on his phone, then his laptop, worked on the first try. | Added a database trigger to copy each new account into `users`; the first version used `gen_random_bytes()`, which would have made every sign-up fail on Supabase. Caught and fixed in PR #22. |
+| 2. Data model | Changed | Done | Designing the tables in my plan first meant the agent built what I designed. | Built as planned, plus database checks (rating 1–5, valid type) and `user_id` defaulting to the logged-in user. |
+| 3. CRUD | Shipped | Done | The notes about each place were more useful than the outing log; Julian liked them most.
+| 4. Validation | Changed | Done | A friendly message is better than a form that silently fails.
+| 5. Stars | Shipped | Done | Stars use one shared table for everyone, not one per user.
+| 6. Find things | Changed | Done | With only a few places, filters (fenced, off-leash) matter more than search.
+| 7. Dashboard | Changed | Done | Stats only mean something with enough data. With one visit each, "favorite spot" felt random.
+| 8. Random pick with filters | Changed | Done | Reusing the same filters made a new feature quick to build.
+| 9. Sitter share link | Changed | Done | The "extra" feature turned out to be the main value of the app. | Built as a database function that returns only safe columns, so logged-out visitors never touch the `places` table. Also hides 🚫 places and treat stops, and the link can be reset. |
+| 10. Dog Mode + secret treat stops | Shipped | Done | Small fun touches make an app feel personal.
+| Bonus: 🏆 Most-visited badge | Changed | Backlogged | I cut it first, and Julian's test suggests it may not belong at all. Visit counts serve a "log my outings" app, but the real value turned out to be telling a sitter where to go and what to watch for. If v2 centers on the sitter, the useful signals are things like "walkable from home," "safe off-leash" and "dogs' favorite," not how many times *I* went. Lesson: a feature that made sense under the original purpose can become irrelevant once you learn what users actually value.
+| Test 1: Data isolation | Changed | Done | Privacy is enforced by the database (row-level security), not the app's code. Turning it off for the red test let User B see 2 places, including **my real one**, while the app looked completely normal. You can't see this kind of bug by clicking around, which is why it needs an automated test against the real database, not a fake one. | Runs in GitHub Actions against real Supabase. The red run showed User B seeing **my real place**, not just test data. |
+| Test 2: Dashboard stat | Shipped | Done | The agent put the dashboard math in its own function (`computeStats`), separate from the page, so it could be tested in milliseconds with made-up outings and no database or login. Breaking one character (dividing by count + 1) turned 4.0 into 3 and the test caught it immediately. Lesson: math that's mixed into the page is hard to test; math pulled out on its own is easy.
