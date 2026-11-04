@@ -4,7 +4,7 @@
 
 Yayas is a web app for logging the parks, trails, beaches and neighborhood walks you take your dogs to: what each place has (fenced, off-leash, swimming, walkable from home), what to watch out for (crowds, bikers, kids), tips for next time, and how much your dog liked each outing.
 
-**Live app:** _LIVE URL HERE_
+**Live app:** https://yayas-9vpb.vercel.app
 
 ## What you can do
 - **Sign up / log in.** Every account sees only its own data.
