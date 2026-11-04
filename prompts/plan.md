@@ -15,3 +15,15 @@ Key prompts I (Taylor) gave Claude Code while planning, in order:
 7. Name: first draft was "Sniff Spots"; I caught that **Sniffspot is an existing app**, and we renamed it **Yayas** ("get your yayas out").
 
 Agent then drafted PLAN.md from these decisions; I reviewed it before merging.
+
+---
+
+## Agent responses on the sitter link (added Nov 4 from the chat transcript, for my reflection)
+
+After my prompt *"a public share link could be cool to share with other dog people (like my dog sitter)? I'm often sending suggestions to my dog sitters…"*, the agent replied:
+
+> "A lot of these combine neatly, and the dog sitter idea is the strongest one so far because it's a real problem you have."
+
+> "**The share link is the riskiest of the three.** It must show only what you shared and never anyone else's data. I'd put it in section 7, 'Risks and cuts.'"
+
+Its proposed version was only *"a read-only page you can text to your dog sitter… The sitter doesn't need an account."* It never mentioned which name would appear on the page. The heading "taylor_dahlgren's dog-approved spots" (from my email address) was decided later, in code, in PR #22, without being discussed.
