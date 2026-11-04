@@ -8,7 +8,7 @@ import { validatePlace } from "@/lib/validate";
 const EMPTY = {
   name: "", type: "park", tips: "",
   fenced: false, off_leash: false, swimming: false, walkable_from_home: false,
-  crowded: false, bikers: false, kids: false, dont_go: false,
+  crowded: false, bikers: false, kids: false, dont_go: false, share_with_sitter: false,
 };
 
 export default function PlaceForm({ initial, id }) {
@@ -75,6 +75,7 @@ export default function PlaceForm({ initial, id }) {
         <label className="label" htmlFor="tips">📌 Remember for next time</label>
         <textarea id="tips" className="input" rows={3} value={p.tips || ""} onChange={(e) => set("tips", e.target.value)} placeholder="Park at the north lot. Bring a towel!" />
       </div>
+      <Check k="share_with_sitter" label="Share with my dog sitter" emoji="🔗" />
       <div className="flex gap-3">
         <button className="btn" disabled={busy}>{busy ? "Saving…" : id ? "Save changes" : "Add place"}</button>
         <button type="button" className="btn-ghost" onClick={() => router.back()}>Cancel</button>
