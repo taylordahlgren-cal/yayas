@@ -5,14 +5,17 @@ import { useParams, useRouter } from "next/navigation";
 import RequireAuth from "@/components/RequireAuth";
 import ConfirmDelete from "@/components/ConfirmDelete";
 import OutingForm from "@/components/OutingForm";
-import { getPlace, deletePlace, deleteOuting } from "@/lib/data";
+import { getPlace, deletePlace, deleteOuting, listStarIds } from "@/lib/data";
+import StarButton from "@/components/StarButton";
 import { AMENITIES, WARNINGS, typeInfo } from "@/lib/constants";
 
 function Detail() {
   const { id } = useParams();
   const router = useRouter();
   const [place, setPlace] = useState(undefined);
+  const [starred, setStarred] = useState(null);
   const load = useCallback(() => getPlace(id).then(setPlace).catch(() => setPlace(null)), [id]);
+  useEffect(() => { listStarIds().then((s) => setStarred(s.has(id))).catch(() => setStarred(false)); }, [id]);
   useEffect(() => { load(); }, [load]);
 
   if (place === undefined) return <p className="muted">Loading…</p>;
@@ -32,6 +35,7 @@ function Detail() {
             <h1 className="text-2xl font-bold">{place.name}</h1>
             <p className="muted">{t.label}</p>
           </div>
+          {starred !== null && <StarButton placeId={id} starred={starred} />}
         </div>
         {place.dont_go && <p className="error font-bold">🚫 Don&apos;t go here</p>}
         {place.tips && <p className="p-3 rounded-xl" style={{ background: "var(--bg)" }}>📌 <b>Remember:</b> {place.tips}</p>}
