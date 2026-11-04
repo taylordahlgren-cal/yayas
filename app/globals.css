@@ -46,3 +46,14 @@ html.dog .bg-amber-100 { background: #4a3a1c; color: #ffe4a8; }
 html.dog input[type="date"] { color-scheme: dark; }
 .dog-float { animation: dogfloat 6s ease-in-out infinite; }
 @keyframes dogfloat { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-14px) rotate(8deg); } }
+
+/* iPhone Safari gives date inputs a built-in min-width, so they overflow their card. */
+input[type="date"].input {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 2.75rem;
+}
+input[type="date"]::-webkit-date-and-time-value { text-align: left; }
