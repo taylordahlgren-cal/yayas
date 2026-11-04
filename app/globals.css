@@ -25,3 +25,24 @@ body {
 .label { display: block; font-weight: 600; margin-bottom: .25rem; }
 .error { background: #fdecea; color: #8a1f13; border-radius: .75rem; padding: .6rem .8rem; }
 .muted { color: var(--muted); }
+
+/* 🐶 Dog Mode: dark theme + paw prints */
+html.dog {
+  --bg: #1d1f1e;
+  --card: #2a2d2b;
+  --text: #f3efe6;
+  --muted: #a9b0aa;
+  --primary: #3b4a42;
+  --accent: #F29C5B;
+  --border: #3d423f;
+}
+html.dog body {
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Ctext x='10' y='40' font-size='22' opacity='0.08'%3E🐾%3C/text%3E%3Ctext x='55' y='80' font-size='18' opacity='0.08' transform='rotate(25 60 75)'%3E🐾%3C/text%3E%3C/svg%3E");
+}
+html.dog .error { background: #4a2420; color: #ffd9d2; }
+html.dog .bg-green-100 { background: #24402f; color: #c9f2d6; }
+html.dog .bg-amber-100 { background: #4a3a1c; color: #ffe4a8; }
+html.dog input[type="date"] { color-scheme: dark; }
+.dog-float { animation: dogfloat 6s ease-in-out infinite; }
+@keyframes dogfloat { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-14px) rotate(8deg); } }

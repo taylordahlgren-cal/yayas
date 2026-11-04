@@ -6,6 +6,7 @@ import { listPlaces, listStarIds } from "@/lib/data";
 import StarButton from "@/components/StarButton";
 import FilterBar, { EMPTY_FILTERS } from "@/components/FilterBar";
 import { filterAndSort, avgRating } from "@/lib/filters";
+import { useDogMode } from "@/components/DogMode";
 import { typeInfo } from "@/lib/constants";
 
 function Places() {
@@ -13,6 +14,7 @@ function Places() {
   const [stars, setStars] = useState(new Set());
   const [tab, setTab] = useState("all");
   const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const { dog } = useDogMode();
   const [error, setError] = useState("");
   useEffect(() => {
     Promise.all([listPlaces(), listStarIds()])
@@ -24,7 +26,8 @@ function Places() {
   if (error) return <p className="error">{error}</p>;
   if (!places) return <p className="muted">Loading…</p>;
 
-  const base = tab === "starred" ? places.filter((p) => stars.has(p.id)) : places;
+  const visible = dog ? places : places.filter((p) => p.type !== "treat stop");
+  const base = tab === "starred" ? visible.filter((p) => stars.has(p.id)) : visible;
   const shown = filterAndSort(base, filters);
 
   return (
@@ -37,6 +40,7 @@ function Places() {
         <button className={tab === "all" ? "btn" : "btn-ghost"} onClick={() => setTab("all")}>All ({places.length})</button>
         <button className={tab === "starred" ? "btn" : "btn-ghost"} onClick={() => setTab("starred")}>⭐ Starred ({stars.size})</button>
       </div>
+      {dog && <p className="card p-3 text-center">🦴 Dog Mode: secret treat stops unlocked!</p>}
       {places.length > 0 && <FilterBar value={filters} onChange={setFilters} />}
       {places.length > 0 && base.length > 0 && shown.length === 0 && <p className="card p-6 text-center muted">No places match. Try removing a filter.</p>}
       {tab === "starred" && base.length === 0 && <p className="card p-6 text-center muted">No starred places yet. Tap ☆ on a place to star it.</p>}
