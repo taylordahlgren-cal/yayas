@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
       <body className="antialiased min-h-screen">
         <Providers>
           <NavBar />
-          <main className="max-w-3xl mx-auto px-4 py-6">{children}</main>
+          <main className="max-w-3xl mx-auto px-4 py-6 pb-24">{children}</main>
         </Providers>
       </body>
     </html>
