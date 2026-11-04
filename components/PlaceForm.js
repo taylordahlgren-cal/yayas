@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { PLACE_TYPES, AMENITIES, WARNINGS } from "@/lib/constants";
 import { savePlace } from "@/lib/data";
 import { validatePlace } from "@/lib/validate";
+import { useDogMode } from "@/components/DogMode";
 
 const EMPTY = {
   name: "", type: "park", tips: "",
@@ -13,6 +14,7 @@ const EMPTY = {
 
 export default function PlaceForm({ initial, id }) {
   const router = useRouter();
+  const { dog } = useDogMode();
   const [p, setP] = useState(() => {
     const base = { ...EMPTY };
     if (initial) Object.keys(EMPTY).forEach((k) => (base[k] = initial[k] ?? EMPTY[k]));
@@ -57,7 +59,7 @@ export default function PlaceForm({ initial, id }) {
       <div>
         <label className="label" htmlFor="type">Type</label>
         <select id="type" className="input" value={p.type} onChange={(e) => set("type", e.target.value)}>
-          {PLACE_TYPES.map((t) => <option key={t.value} value={t.value}>{t.emoji} {t.label}</option>)}
+          {PLACE_TYPES.filter((t) => !t.dogModeOnly || dog || p.type === t.value).map((t) => <option key={t.value} value={t.value}>{t.emoji} {t.label}</option>)}
         </select>
       </div>
       <fieldset>
