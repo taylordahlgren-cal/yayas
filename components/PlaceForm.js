@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PLACE_TYPES, AMENITIES, WARNINGS } from "@/lib/constants";
 import { savePlace } from "@/lib/data";
+import { validatePlace } from "@/lib/validate";
 
 const EMPTY = {
   name: "", type: "park", tips: "",
@@ -18,12 +19,16 @@ export default function PlaceForm({ initial, id }) {
     return base;
   });
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const [busy, setBusy] = useState(false);
   const set = (k, v) => setP((old) => ({ ...old, [k]: v }));
 
   async function submit(e) {
     e.preventDefault();
     setError("");
+    const errs = validatePlace(p);
+    setFieldErrors(errs);
+    if (Object.keys(errs).length) return setError("Almost! Please fix the highlighted field.");
     setBusy(true);
     try {
       const saved = await savePlace({ ...p, name: p.name.trim() }, id);
@@ -45,7 +50,9 @@ export default function PlaceForm({ initial, id }) {
       {error && <p className="error">{error}</p>}
       <div>
         <label className="label" htmlFor="name">Name *</label>
-        <input id="name" className="input" value={p.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Point Isabel Dog Park" />
+        <input id="name" className="input" value={p.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Point Isabel Dog Park"
+          style={fieldErrors.name ? { borderColor: "var(--danger)" } : undefined} />
+        {fieldErrors.name && <p className="text-sm mt-1" style={{ color: "var(--danger)" }}>{fieldErrors.name}</p>}
       </div>
       <div>
         <label className="label" htmlFor="type">Type</label>
