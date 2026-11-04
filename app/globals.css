@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #FFF8EC;
+  --card: #ffffff;
+  --text: #1f2a24;
+  --muted: #6b7a72;
+  --primary: #2F5D50;
+  --accent: #E9844A;
+  --danger: #c0392b;
+  --border: #eadfcb;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; }
+.btn { background: var(--accent); color: white; border-radius: 9999px; padding: .55rem 1.1rem; font-weight: 600; }
+.btn:hover { filter: brightness(1.05); }
+.btn-ghost { border: 1px solid var(--border); border-radius: 9999px; padding: .5rem 1rem; background: var(--card); color: var(--text); }
+.input { width: 100%; border: 1px solid var(--border); border-radius: .75rem; padding: .55rem .75rem; background: var(--card); color: var(--text); }
+.label { display: block; font-weight: 600; margin-bottom: .25rem; }
+.error { background: #fdecea; color: #8a1f13; border-radius: .75rem; padding: .6rem .8rem; }
+.muted { color: var(--muted); }
