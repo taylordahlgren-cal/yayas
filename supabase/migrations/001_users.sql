@@ -2,7 +2,7 @@
 create table if not exists public.users (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null,
-  share_token text unique default encode(gen_random_bytes(12), 'hex'),
+  share_token text unique default replace(gen_random_uuid()::text, '-', ''),
   created_at timestamptz not null default now()
 );
 
