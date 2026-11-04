@@ -20,6 +20,7 @@ export default function NavBar() {
         {user ? (
           <>
             <Link href="/places">Places</Link>
+            <Link href="/dashboard">Dashboard</Link>
             <button onClick={logOut} className="underline">Log out</button>
           </>
         ) : (
